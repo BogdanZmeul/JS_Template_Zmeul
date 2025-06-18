@@ -1,0 +1,142 @@
+[
+    {
+        "id": "pizza-1",
+        "name": "Імпреза",
+        "category": "З грибами",
+        "categoryAttribute": "mushrooms",
+        "description": "Балик, салямі, куриця, сир моцарелла, сир рокфорд, ананаси, томатна паста, петрушка",
+        "image": "images/pizza_7.jpg",
+        "badge": "Нова",
+        "badgeClass": "new",
+        "prices": [
+            {"size": 30, "weight": 370, "price": 99},
+            {"size": 40, "weight": 660, "price": 169}
+        ]
+    },
+    {
+        "id": "pizza-2",
+        "name": "BBQ",
+        "category": "М'ясна піца",
+        "categoryAttribute": "meat",
+        "description": "Мисливські ковбаски, ковбаски пепероні, шинка, сир домашній, шампіньйони, петрушка, оливки",
+        "image": "images/pizza_2.jpg",
+        "badge": "Популярна",
+        "badgeClass": "popular",
+        "prices": [
+            {"size": 30, "weight": 460, "price": 139},
+            {"size": 40, "weight": 840, "price": 199}
+        ]
+    },
+    {
+        "id": "pizza-3",
+        "name": "Міксовий поло",
+        "category": "М'ясна піца",
+        "categoryAttribute": "meat",
+        "description": "Вітчина, куриця копчена, сир моцарелла, ананаси, кукурудза, петрушка, соус томатний",
+        "image": "images/pizza_4.jpg",
+        "badge": "",
+        "badgeClass": "",
+        "prices": [
+            {"size": 30, "weight": 430, "price": 115},
+            {"size": 40, "weight": 780, "price": 179}
+        ]
+    },
+    {
+        "id": "pizza-4",
+        "name": "Грибна",
+        "category": "З грибами",
+        "categoryAttribute": "mushrooms",
+        "description": "Печериці, гливи, білі гриби, сир моцарелла, вершковий соус, цибуля, зелень",
+        "image": "images/pizza_5.jpg",
+        "badge": "",
+        "badgeClass": "",
+        "prices": [
+            {"size": 30, "weight": 390, "price": 105},
+            {"size": 40, "weight": 720, "price": 155}
+        ]
+    },
+    {
+        "id": "pizza-5",
+        "name": "Чотири сири",
+        "category": "Вега",
+        "categoryAttribute": "vegan",
+        "description": "Моцарелла, пармезан, рокфор, дорблю, вершковий соус",
+        "image": "images/pizza_6.jpg",
+        "badge": "",
+        "badgeClass": "",
+        "prices": [
+            {"size": 30, "weight": 410, "price": 125},
+            {"size": 40, "weight": 750, "price": 185}
+        ]
+    },
+    {
+        "id": "pizza-6",
+        "name": "Маргарита",
+        "category": "Вега",
+        "categoryAttribute": "vegan",
+        "description": "Помідори, сир моцарелла, базилік, томатний соус",
+        "image": "images/pizza_1.jpg",
+        "badge": "",
+        "badgeClass": "",
+        "prices": [
+            {"size": 30, "weight": 350, "price": 89},
+            {"size": 40, "weight": 600, "price": 149}
+        ]
+    },
+    {
+        "id": "pizza-7",
+        "name": "Діабло",
+        "category": "М'ясна піца",
+        "categoryAttribute": "meat",
+        "description": "Ковбаски пепероні, халапеньо, сир моцарелла, томатний соус",
+        "image": "images/pizza_3.jpg",
+        "badge": "",
+        "badgeClass": "",
+        "prices": [
+            {"size": 30, "weight": 400, "price": 119},
+            {"size": 40, "weight": 730, "price": 175}
+        ]
+    },
+    {
+        "id": "pizza-8",
+        "name": "Гавайська",
+        "category": "З ананасами",
+        "categoryAttribute": "pineapple",
+        "description": "Курка, ананаси, сир моцарелла, томатний соус",
+        "image": "images/pizza_8.jpg",
+        "badge": "",
+        "badgeClass": "",
+        "prices": [
+            {"size": 30, "weight": 380, "price": 109},
+            {"size": 40, "weight": 680, "price": 165}
+        ]
+    },
+    {
+        "id": "pizza-9",
+        "name": "Морська",
+        "category": "З морепродуктами",
+        "categoryAttribute": "meat",
+        "description": "Мідії, креветки, кальмари, сир моцарелла, вершковий соус, лимон",
+        "image": "images/pizza_9.jpg",
+        "badge": "Нова",
+        "badgeClass": "new",
+        "prices": [
+            {"size": 30, "weight": 450, "price": 149},
+            {"size": 40, "weight": 800, "price": 210}
+        ]
+    },
+    {
+        "id": "pizza-10",
+        "name": "Веганська",
+        "category": "Вега",
+        "categoryAttribute": "vegan",
+        "description": "Шампіньйони, помідори, солодкий перець, оливки, цибуля, томатний соус",
+        "image": "images/pizza_1.jpg",
+        "badge": "",
+        "badgeClass": "",
+        "prices": [
+            {"size": 30, "weight": 380, "price": 95},
+            {"size": 40, "weight": 650, "price": 150}
+        ]
+    }
+]

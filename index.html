@@ -42,134 +42,26 @@
 
         <section class="page-nav">
             <ul class="page-nav links">
-                <li class="active"><a href="#">Усі</a></li>
-                <li><a href="#">М'ясні</a></li>
-                <li><a href="#">З ананасами</a></li>
-                <li><a href="#">З грибами</a></li>
-                <li><a href="#">З морепродуктами</a></li>
-                <li><a href="#">Вега</a></li>
+                <li class="active" data-category="all"><a href="#">Усі</a></li>
+                <li data-category="meat"><a href="#">М'ясні</a></li>
+                <li data-category="pineapple"><a href="#">З ананасами</a></li>
+                <li data-category="mushrooms"><a href="#">З грибами</a></li>
+                <li data-category="seafood"><a href="#">З морепродуктами</a></li>
+                <li data-category="vegan"><a href="#">Вега</a></li>
             </ul>
         </section>
 
         <section class="pizza-container">
-            <article class="pizza-card">
+            <article class="pizza-card pizza-card-template" id="pizzaCardTemplate" style="display: none;">
                 <div class="pizza-image-container">
-                    <img src="images/pizza_7.jpg" alt="Піца Імпреза" class="pizza-image">
-                    <span class="pizza-badge new">Нова</span>
+                    <img src="" alt="Піца" class="pizza-image">
+                    <span class="pizza-badge"></span>
                 </div>
                 <div class="pizza-card-content">
-                    <h3 class="pizza-title">Імпреза</h3>
-                    <p class="pizza-category">М'ясна піца</p>
-                    <p class="pizza-description">Балик, салямі, куриця, сир моцарелла, сир рокфорд, ананаси, томатна
-                        паста, петрушка</p>
+                    <h3 class="pizza-title"></h3>
+                    <p class="pizza-category"></p>
+                    <p class="pizza-description"></p>
                     <div class="pizza-sizes">
-                        <div class="pizza-size-option">
-                            <div class="pizza-size-info">
-                                <div>
-                                    <img src="images/size-icon.svg" alt="Розмір піци"> 30
-                                </div>
-                                <div>
-                                    <img src="images/weight.svg" alt="Вага піци"> 370
-                                </div>
-                            </div>
-                            <div class="pizza-price">99</div>
-                            <div class="pizza-price currency">грн.</div>
-                            <button class="pizza-buy-button">Купити</button>
-                        </div>
-                        <div class="pizza-size-option">
-                            <div class="pizza-size-info">
-                                <div>
-                                    <img src="images/size-icon.svg" alt="Розмір піци"> 40
-                                </div>
-                                <div>
-                                    <img src="images/weight.svg" alt="Вага піци"> 660
-                                </div>
-                            </div>
-                            <div class="pizza-price">169</div>
-                            <div class="pizza-price currency">грн.</div>
-                            <button class="pizza-buy-button">Купити</button>
-                        </div>
-                    </div>
-                </div>
-            </article>
-
-            <article class="pizza-card">
-                <div class="pizza-image-container">
-                    <img src="images/pizza_2.jpg" alt="Піца BBQ" class="pizza-image">
-                    <span class="pizza-badge popular">Популярна</span>
-                </div>
-                <div class="pizza-card-content">
-                    <h3 class="pizza-title">BBQ</h3>
-                    <p class="pizza-category">М'ясна піца</p>
-                    <p class="pizza-description">Мисливські ковбаски, ковбаски пепероні, шинка, сир домашній,
-                        шампіньйони, петрушка, оливки</p>
-                    <div class="pizza-sizes">
-                        <div class="pizza-size-option">
-                            <div class="pizza-size-info">
-                                <div>
-                                    <img src="images/size-icon.svg" alt="Розмір піци"> 30
-                                </div>
-                                <div>
-                                    <img src="images/weight.svg" alt="Вага піци"> 460
-                                </div>
-                            </div>
-                            <div class="pizza-price">139</div>
-                            <div class="pizza-price currency">грн.</div>
-                            <button class="pizza-buy-button">Купити</button>
-                        </div>
-                        <div class="pizza-size-option">
-                            <div class="pizza-size-info">
-                                <div>
-                                    <img src="images/size-icon.svg" alt="Розмір піци"> 40
-                                </div>
-                                <div>
-                                    <img src="images/weight.svg" alt="Вага піци"> 840
-                                </div>
-                            </div>
-                            <div class="pizza-price">199</div>
-                            <div class="pizza-price currency">грн.</div>
-                            <button class="pizza-buy-button">Купити</button>
-                        </div>
-                    </div>
-                </div>
-            </article>
-
-            <article class="pizza-card">
-                <div class="pizza-image-container">
-                    <img src="images/pizza_4.jpg" alt="Піца Міксовий поло" class="pizza-image">
-                </div>
-                <div class="pizza-card-content">
-                    <h3 class="pizza-title">Міксовий поло</h3>
-                    <p class="pizza-category">М'ясна піца</p>
-                    <p class="pizza-description">Вітчина, куриця копчена, сир моцарелла, ананаси, кукурудза, петрушка,
-                        соус томатний</p>
-                    <div class="pizza-sizes">
-                        <div class="pizza-size-option">
-                            <div class="pizza-size-info">
-                                <div>
-                                    <img src="images/size-icon.svg" alt="Розмір піци"> 30
-                                </div>
-                                <div>
-                                    <img src="images/weight.svg" alt="Вага піци"> 430
-                                </div>
-                            </div>
-                            <div class="pizza-price">115</div>
-                            <div class="pizza-price currency">грн.</div>
-                            <button class="pizza-buy-button">Купити</button>
-                        </div>
-                        <div class="pizza-size-option">
-                            <div class="pizza-size-info">
-                                <div>
-                                    <img src="images/size-icon.svg" alt="Розмір піци"> 40
-                                </div>
-                                <div>
-                                    <img src="images/weight.svg" alt="Вага піци"> 780
-                                </div>
-                            </div>
-                            <div class="pizza-price">179</div>
-                            <div class="pizza-price currency">грн.</div>
-                            <button class="pizza-buy-button">Купити</button>
-                        </div>
                     </div>
                 </div>
             </article>
@@ -190,66 +82,15 @@
 
     <aside id="cartAside">
         <section class="order summary">
-            <h2>Замовлення<span class="order count">3</span></h2>
+            <h2>Замовлення<span class="order count">0</span></h2>
             <button class="btn clear-order">Очистити замовлення</button>
         </section>
 
         <ul class="order list">
-            <li class="order item">
-                <div class="item details">
-                    <h3 class="item name">BBQ (Мала)</h3>
-                    <div class="item attributes">
-                        <img src="images/size-icon.svg" alt="Розмір піци"> 30
-                        <img src="images/weight.svg" alt="Вага піци"> 460
-                    </div>
-                    <div class="item controls">
-                        <span class="item price">556грн</span>
-                        <button class="btn quantity minus"><span>-</span></button>
-                        <span class="item quantity">4</span>
-                        <button class="btn quantity plus"><span>+</span></button>
-                        <button class="btn remove-item">x</button>
-                    </div>
-                </div>
-                <img src="images/pizza_2.jpg" alt="Піца BBQ" class="item image">
-            </li>
-            <li class="order item">
-                <div class="item details">
-                    <h3 class="item name">Россо Густо (Мала)</h3>
-                    <div class="item attributes">
-                        <img src="images/size-icon.svg" alt="Розмір піци"> 30
-                        <img src="images/weight.svg" alt="Вага піци"> 400
-                    </div>
-                    <div class="item controls">
-                        <span class="item price">189грн</span>
-                        <button class="btn quantity minus"><span>-</span></button>
-                        <span class="item quantity">1</span>
-                        <button class="btn quantity plus"><span>+</span></button>
-                        <button class="btn remove-item">x</button>
-                    </div>
-                </div>
-                <img src="images/pizza_4.jpg" alt="Піца BBQ" class="item image">
-            </li>
-            <li class="order item">
-                <div class="item details">
-                    <h3 class="item name">Міксовий поло (Велика)</h3>
-                    <div class="item attributes">
-                        <img src="images/size-icon.svg" alt="Розмір піци"> 40
-                        <img src="images/weight.svg" alt="Вага піци"> 780
-                    </div>
-                    <div class="item controls">
-                        <span class="item price">179грн</span>
-                        <button class="btn quantity minus"><span>-</span></button>
-                        <span class="item quantity">1</span>
-                        <button class="btn quantity plus"><span>+</span></button>
-                        <button class="btn remove-item">x</button>
-                    </div>
-                </div>
-                <img src="images/pizza_1.jpg" alt="Піца BBQ" class="item image">
-            </li>
         </ul>
 
         <section class="order total">
-            <p>Сума замовлення <span class="total-amount">924 грн</span></p>
+            <p>Сума замовлення <span class="total-amount">0 грн</span></p>
             <button class="btn order">Замовити</button>
         </section>
 
