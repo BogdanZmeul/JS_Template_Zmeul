@@ -3,17 +3,19 @@ document.addEventListener('DOMContentLoaded', function () {
     const cartAside = document.getElementById('cartAside');
     const orderList = document.querySelector('.order.list');
     const totalAmountSpan = document.querySelector('.order.total .total-amount');
-    const orderCountSpans = document.querySelectorAll('.order.summary .order.count');
+    const orderCardCount = document.querySelector('.order.summary .order.count');
     const pizzaContainer = document.querySelector('.pizza-container');
     const pizzaCardTemplate = document.getElementById('pizzaCardTemplate');
-    const pageNavLinks = document.querySelector('.page-nav.links'); // No direct change here, but used below
+    const pageNavLinks = document.querySelector('.page-nav.links');
 
-    let allPizzas = []; // Зберігатиме всі піци після завантаження з JSON
-    let cartItems = []; // Зберігатиме елементи кошика
+    let allPizzas = [];
+    let cartItems = [];
 
     const LOCAL_STORAGE_KEY = 'kmaPizzaCart';
 
-    // Функція для завантаження кошика з Local Storage
+    loadCartFromLocalStorage();
+    fetchPizzas();
+
     function loadCartFromLocalStorage() {
         const storedCart = localStorage.getItem(LOCAL_STORAGE_KEY);
         if (storedCart) {
@@ -21,36 +23,75 @@ document.addEventListener('DOMContentLoaded', function () {
         } else {
             cartItems = [];
         }
-        updateCartDisplay();
+        initializeCartDisplay();
     }
 
-    // Функція для збереження кошика в Local Storage
     function saveCartToLocalStorage() {
         localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(cartItems));
     }
 
-    // Функція для оновлення відображення кошика та загальної суми
-    function updateCartDisplay() {
-        orderList.innerHTML = ''; // Очищаємо поточний список замовлень
+    async function fetchPizzas() {
+        try {
+            const response = await fetch('./src/data/pizzas.json');
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            allPizzas = await response.json();
+            displayPizzas(allPizzas);
+        } catch (error) {
+            console.error('Не вдалося завантажити піци:', error);
+            pizzaContainer.innerHTML = '<p>Не вдалося завантажити список піц. Спробуйте пізніше.</p>';
+        }
+    }
 
+    function initializeCartDisplay() {
+        orderList.innerHTML = '';
+
+        if (cartItems.length === 0) {
+            toggleEmptyCartMessage();
+            return;
+        }
         let total = 0;
         let totalItemsInCart = 0;
         const fragment = document.createDocumentFragment();
+        cartItems.forEach(item => {
+            total += item.price * item.quantity;
+            totalItemsInCart += item.quantity;
+            fragment.appendChild(createCartElement(item));
+        });
+        orderList.appendChild(fragment);
+        totalAmountSpan.textContent = `${total} грн`;
+        orderCardCount.textContent = totalItemsInCart;
 
+    }
+
+    function toggleEmptyCartMessage() {
+        const emptyCartMessage = document.querySelector('.empty-cart-message');
         if (cartItems.length === 0) {
-            const emptyCartMessage = document.createElement('li');
-            emptyCartMessage.classList.add('empty-cart-message');
-            emptyCartMessage.textContent = 'Ваш кошик порожній.';
-            fragment.appendChild(emptyCartMessage);
+            if (!emptyCartMessage) {
+                const newEmptyCartMessage = document.createElement('li');
+                newEmptyCartMessage.classList.add('empty-cart-message');
+                newEmptyCartMessage.textContent = 'Ваш кошик порожній.';
+                totalAmountSpan.textContent = '0 грн';
+                orderCardCount.textContent = '0';
+                orderList.innerHTML = '';
+                orderList.appendChild(newEmptyCartMessage);
+            }
         } else {
-            cartItems.forEach(item => {
-                const li = document.createElement('li');
-                li.classList.add('order', 'item');
-                // Використовуємо комбінацію id та розміру для унікальності товару в кошику
-                li.dataset.itemId = item.id;
-                li.dataset.itemSize = item.size;
+            if (emptyCartMessage) {
+                emptyCartMessage.remove();
+            }
+        }
+    }
 
-                li.innerHTML = `
+    function createCartElement(item) {
+        toggleEmptyCartMessage();
+        const li = document.createElement('li');
+        li.classList.add('order', 'item');
+        li.dataset.itemId = item.id;
+        li.dataset.itemSize = item.size;
+
+        li.innerHTML += `
                     <div class="item details">
                         <h3 class="item name">${item.name} (${item.size === 30 ? 'Мала' : 'Велика'})</h3>
                         <div class="item attributes">
@@ -67,28 +108,15 @@ document.addEventListener('DOMContentLoaded', function () {
                     </div>
                     <img src="${item.image}" alt="Піца ${item.name}" class="item image">
                 `;
-                fragment.appendChild(li);
-
-                total += item.price * item.quantity;
-                totalItemsInCart += item.quantity;
-            });
-        }
-
-        orderList.appendChild(fragment); // Додаємо всі елементи одним разом
-        totalAmountSpan.textContent = `${total} грн`;
-        orderCountSpans.forEach(span => {
-            span.textContent = totalItemsInCart;
-        });
-        saveCartToLocalStorage(); // Зберігаємо кошик після кожного оновлення
+        return li;
     }
 
-    // Функція для очищення кошика
-    function clearOrder() {
+    function clearOrderCart() {
         cartItems = [];
-        updateCartDisplay();
+        toggleEmptyCartMessage();
+        saveCartToLocalStorage();
     }
 
-    // Функція для додавання піци до кошика
     function addPizzaToCart(pizzaId, pizzaSize) {
         const pizza = allPizzas.find(p => p.id === pizzaId);
         if (!pizza) return;
@@ -99,22 +127,24 @@ document.addEventListener('DOMContentLoaded', function () {
         const existingItemIndex = cartItems.findIndex(item => item.id === pizzaId && item.size == pizzaSize);
 
         if (existingItemIndex > -1) {
-            cartItems[existingItemIndex].quantity++;
+            updateItemQuantity(cartItems[existingItemIndex].id, pizzaSize, 'increase');
         } else {
             cartItems.push({
                 id: pizza.id,
                 name: pizza.name,
                 size: priceOption.size,
                 weight: priceOption.weight,
-                price: priceOption.price, // Ціна за одну одиницю
+                price: priceOption.price,
                 quantity: 1,
                 image: pizza.image
             });
+            orderList.appendChild(createCartElement(cartItems[cartItems.length - 1]));
+            orderCardCount.textContent = parseInt(orderCardCount.textContent) + 1;
+            totalAmountSpan.textContent = `${parseInt(totalAmountSpan.textContent) + priceOption.price} грн`;
         }
-        updateCartDisplay();
+
     }
 
-    // Функція для зміни кількості товару в кошику
     function updateItemQuantity(itemId, itemSize, action) {
         const itemIndex = cartItems.findIndex(item => item.id === itemId && item.size == itemSize);
 
@@ -127,63 +157,75 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (item.quantity > 1) {
                     item.quantity--;
                 } else {
-                    // Якщо кількість стає 0, видаляємо товар
-                    cartItems.splice(itemIndex, 1);
+                    removeItemFromCart(itemId, itemSize);
                 }
             }
-            updateCartDisplay();
+            const itemElement = orderList.querySelector(`li[data-item-id="${itemId}"][data-item-size="${itemSize}"]`);
+            if (itemElement) {
+                const quantityElement = itemElement.querySelector('.item.quantity');
+                const priceElement = itemElement.querySelector('.item.price');
+                quantityElement.textContent = item.quantity;
+                priceElement.textContent = `${item.price * item.quantity}грн`;
+                totalAmountSpan.textContent = `${parseInt(totalAmountSpan.textContent) + (action === 'increase' ? item.price : -item.price)} грн`;
+                orderCardCount.textContent = `${action === 'increase' ? parseInt(orderCardCount.textContent) + 1 : parseInt(orderCardCount.textContent) - 1}`;
+            }
+            saveCartToLocalStorage();
         }
     }
 
-    // Функція для видалення піци з кошика
     function removeItemFromCart(itemId, itemSize) {
         const itemIndex = cartItems.findIndex(item => item.id === itemId && item.size == itemSize);
         if (itemIndex > -1) {
+            const itemElement = orderList.querySelector(`li[data-item-id="${itemId}"][data-item-size="${itemSize}"]`);
+            if (itemElement) {
+                itemElement.remove();
+                totalAmountSpan.textContent = `${parseInt(totalAmountSpan.textContent) - (cartItems[itemIndex].price * cartItems[itemIndex].quantity)} грн`;
+                orderCardCount.textContent = parseInt(orderCardCount.textContent) - cartItems[itemIndex].quantity;
+            }
             cartItems.splice(itemIndex, 1);
-            updateCartDisplay();
+            toggleEmptyCartMessage();
+            saveCartToLocalStorage();
         }
     }
 
-    // Функція для відображення піц на сторінці
     function displayPizzas(pizzasToDisplay) {
-        pizzaContainer.innerHTML = ''; // Очищаємо контейнер
+        pizzaContainer.innerHTML = '';
         const pizzaCountElement = document.querySelector('.page-title .order.count');
 
         if (pizzasToDisplay.length === 0) {
-            // Якщо піц немає, виводимо повідомлення
             const noPizzasMessage = document.createElement('h2');
             noPizzasMessage.textContent = 'Не знайдено піц за цією категорією';
-            noPizzasMessage.classList.add('no-pizzas-message'); // Додайте клас для стилізації в CSS
+            noPizzasMessage.classList.add('no-pizzas-message');
             pizzaContainer.appendChild(noPizzasMessage);
-            pizzaCountElement.textContent = 0; // Оновлюємо лічильник на 0
-            return; // Виходимо з функції
+            pizzaCountElement.textContent = 0;
+            return;
         }
 
         const fragment = document.createDocumentFragment();
 
         pizzasToDisplay.forEach(pizza => {
             const pizzaCard = pizzaCardTemplate.cloneNode(true);
-            pizzaCard.style.display = ''; // Показуємо шаблон
-            pizzaCard.removeAttribute('id'); // Видаляємо ID шаблону
+            pizzaCard.style.display = '';
+            pizzaCard.removeAttribute('id');
             pizzaCard.classList.remove('pizza-card-template');
 
             pizzaCard.querySelector('.pizza-image').src = pizza.image;
             pizzaCard.querySelector('.pizza-image').alt = `Піца ${pizza.name}`;
             pizzaCard.querySelector('.pizza-title').textContent = pizza.name;
-            pizzaCard.querySelector('.pizza-category').textContent = pizza.category; // Відображаємо українську назву категорії
+            pizzaCard.querySelector('.pizza-category').textContent = pizza.category;
             pizzaCard.querySelector('.pizza-description').textContent = pizza.description;
 
             const badge = pizzaCard.querySelector('.pizza-badge');
             if (pizza.badge) {
                 badge.textContent = pizza.badge;
                 badge.className = `pizza-badge ${pizza.badgeClass}`;
-                badge.style.display = ''; // Переконаємося, що бейдж видимий
+                badge.style.display = '';
             } else {
-                badge.style.display = 'none'; // Ховаємо бейдж, якщо його немає
+                badge.style.display = 'none';
             }
 
             const pizzaSizesContainer = pizzaCard.querySelector('.pizza-sizes');
-            pizzaSizesContainer.innerHTML = ''; // Очищаємо розміри перед додаванням
+            pizzaSizesContainer.innerHTML = '';
 
             pizza.prices.forEach(priceOption => {
                 const sizeOptionDiv = document.createElement('div');
@@ -206,49 +248,29 @@ document.addEventListener('DOMContentLoaded', function () {
             fragment.appendChild(pizzaCard);
         });
         pizzaContainer.appendChild(fragment);
-        pizzaCountElement.textContent = pizzasToDisplay.length; // Оновлюємо лічильник відповідно до відфільтрованих піц
+        pizzaCountElement.textContent = pizzasToDisplay.length;
     }
 
-    // Завантаження піц з JSON
-    async function fetchPizzas() {
-        try {
-            const response = await fetch('./src/data/pizzas.json'); // Шлях до вашого JSON
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            allPizzas = await response.json();
-            displayPizzas(allPizzas); // Відображаємо всі піци за замовчуванням
-        } catch (error) {
-            console.error('Не вдалося завантажити піци:', error);
-            pizzaContainer.innerHTML = '<p>Не вдалося завантажити список піц. Спробуйте пізніше.</p>';
-        }
-    }
-
-    // Єдиний eventListener на документі
-    document.addEventListener('click', function (event) {
+    document.body.addEventListener('click', function (event) {
         const target = event.target;
 
-        // 1. Логіка для toggleCartButton та закриття aside при кліку поза ним
         if (toggleCartButton.contains(target)) {
             cartAside.classList.toggle('active');
         } else if (cartAside.classList.contains('active') && !cartAside.contains(target)) {
             cartAside.classList.remove('active');
         }
 
-        // 2. Логіка для кнопки "Очистити замовлення"
         if (target.classList.contains('clear-order')) {
-            clearOrder();
+            clearOrderCart();
         }
 
-        // 3. Логіка для кнопок зміни кількості та видалення товару в кошику
         if (target.closest('.item.controls')) {
-            // Шукаємо найближчу кнопку, яка є батьківською для клікнутого елемента
             const clickedButton = target.closest('.btn.quantity') || target.closest('.btn.remove-item');
 
             if (clickedButton) {
                 const action = clickedButton.dataset.action;
                 const itemId = clickedButton.dataset.itemId;
-                const itemSize = clickedButton.dataset.itemSize; // Розмір піци
+                const itemSize = clickedButton.dataset.itemSize;
 
                 if (itemId && itemSize) {
                     if (action === 'remove') {
@@ -260,7 +282,6 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
 
-        // 4. Логіка для кнопок "Купити" на картках піц
         if (target.classList.contains('pizza-buy-button')) {
             const pizzaId = target.dataset.pizzaId;
             const pizzaSize = target.dataset.pizzaSize;
@@ -269,14 +290,13 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
 
-        // 5. Логіка для фільтрації піц за категоріями
         if (target.closest('.page-nav.links li') && target.tagName === 'A') {
-            event.preventDefault(); // Запобігаємо переходу за посиланням
+            event.preventDefault();
 
             const listItem = target.closest('.page-nav.links li');
-            const selectedCategoryAttribute = listItem.dataset.category; // Отримуємо data-category
+            const selectedCategoryAttribute = listItem.dataset.category;
+            const pageTitle = document.querySelector('.page-title h1');
 
-            // Оновлюємо активний клас
             document.querySelectorAll('.page-nav.links li').forEach(li => li.classList.remove('active'));
             listItem.classList.add('active');
 
@@ -285,16 +305,20 @@ document.addEventListener('DOMContentLoaded', function () {
             if (selectedCategoryAttribute === 'all') {
                 filteredPizzas = allPizzas;
             } else {
-                // Фільтруємо за новим полем categoryAttribute
                 filteredPizzas = allPizzas.filter(pizza => {
                     return pizza.categoryAttribute === selectedCategoryAttribute;
                 });
             }
+
+            if (selectedCategoryAttribute === 'all') {
+                pageTitle.innerHTML = 'Усі піци' + ` <span class="order count">"${filteredPizzas.length}"</span>`;
+            } else {
+                pageTitle.innerHTML = 'Піци ' + listItem.textContent.trim().toLocaleLowerCase() +
+                    ` <span class="order count">"${filteredPizzas.length}"</span>`;
+            }
+
             displayPizzas(filteredPizzas);
         }
     });
 
-    // Ініціалізація: завантажуємо кошик і піци
-    loadCartFromLocalStorage();
-    fetchPizzas();
 });
