@@ -556,9 +556,10 @@ aside.active {
 }
 
 .item.price {
-    font-size: calc(0.5rem + 3 * (100vw / 1920));
+    font-size: calc(0.7rem + 3 * (100vw / 1920));
     font-weight: bold;
     color: var(--dark-text-color);
+    min-width: 39px;
 }
 
 .item.controls {
@@ -614,7 +615,11 @@ aside.active {
 .item.quantity {
     font-size: calc(0.7rem + 4 * (100vw / 1920));
     font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     color: var(--dark-text-color);
+    min-width: 17px;
 }
 
 .btn.remove-item {
@@ -740,7 +745,8 @@ aside.active {
     }
 
     .item.price {
-        font-size: calc(0.5rem + (3 + 3 * 0.7) * ((100vw - 320px) / 1920));
+        font-size: calc(0.7rem + (3 + 3 * 0.7) * ((100vw - 320px) / 1920));
+        min-width: unset;
     }
 
     .item.attributes {
@@ -786,6 +792,12 @@ aside.active {
 
     #toggleCartButton {
         display: block;
+    }
+
+    @media (max-width: 300px) {
+        .item.controls{
+            gap: 5px;
+        }
     }
 
 }

@@ -5,8 +5,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const totalAmountSpan = document.querySelector('.order.total .total-amount');
     const orderCardCount = document.querySelector('.order.summary .order.count');
     const pizzaContainer = document.querySelector('.pizza-container');
-    const pizzaCardTemplate = document.getElementById('pizzaCardTemplate');
-    const pageNavLinks = document.querySelector('.page-nav.links');
 
     let allPizzas = [];
     let cartItems = [];
@@ -189,6 +187,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function displayPizzas(pizzasToDisplay) {
+        const pizzaCardTemplate = document.getElementById('pizzaCardTemplate');
         pizzaContainer.innerHTML = '';
         const pizzaCountElement = document.querySelector('.page-title .order.count');
 
