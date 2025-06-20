@@ -25,6 +25,7 @@ body {
     margin: 0;
     padding: 0;
     min-height: 100vh;
+    overflow-y: scroll;
 }
 
 main {
@@ -201,7 +202,6 @@ header {
     align-items: center;
     justify-content: center;
     gap: 5px;
-    flex-grow: 1;
 }
 
 .page-nav {
@@ -265,7 +265,7 @@ header {
     display: grid;
     grid-auto-flow: row;
     grid-template: auto 1fr / 1fr;
-    max-width: 500px;
+    max-width: 400px;
 }
 
 .pizza-card:hover {
@@ -278,8 +278,7 @@ header {
     text-align: center;
     margin-top: 50px;
     color: var(--dark-text-color);
-    font-size: 1.5rem;
-    font-weight: bold;
+    font-size: 1rem;
 }
 
 
@@ -466,10 +465,15 @@ aside {
     position: sticky;
     top: 0;
     height: 100vh;
+    min-width: 260px;
 }
 
-aside.active {
-    display: block;
+.cart-message {
+    width: 100%;
+    text-align: center;
+    margin-top: calc(50vh - 100px);
+    color: var(--dark-text-color);
+    font-size: calc(0.75rem + 4 * (100vw / 1920));
 }
 
 .order.summary {
@@ -499,6 +503,12 @@ aside.active {
     border-radius: 50%;
     padding: 4px 6px;
     font-size: calc(0.625rem + 2 * (100vw / 1920));
+    min-width: 12px
+}
+
+.page-title .order.count {
+    padding: 4px 6px 4px 5px;
+    min-width: 10px
 }
 
 .btn.clear-order {
@@ -559,13 +569,13 @@ aside.active {
     font-size: calc(0.7rem + 3 * (100vw / 1920));
     font-weight: bold;
     color: var(--dark-text-color);
-    min-width: 39px;
+    min-width: 55px;
 }
 
 .item.controls {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 7px;
 }
 
 .btn.quantity {
@@ -740,7 +750,7 @@ aside.active {
         font-size: calc(0.93rem + (4 + 4 * 0.7) * ((100vw - 320px) / 1920));
     }
 
-   .item.quantity{
+    .item.quantity {
         font-size: calc(0.7rem + (4 + 4 * 0.7) * ((100vw - 320px) / 1920));
     }
 
@@ -774,6 +784,7 @@ aside.active {
 
         width: 80vw;
         max-width: 400px;
+        min-width: unset;
 
         box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
 
@@ -795,7 +806,7 @@ aside.active {
     }
 
     @media (max-width: 300px) {
-        .item.controls{
+        .item.controls {
             gap: 5px;
         }
     }

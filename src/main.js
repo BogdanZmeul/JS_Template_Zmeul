@@ -1,14 +1,8 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const toggleCartButton = document.getElementById('toggleCartButton');
-    const cartAside = document.getElementById('cartAside');
-    const orderList = document.querySelector('.order.list');
-    const totalAmountSpan = document.querySelector('.order.total .total-amount');
-    const orderCardCount = document.querySelector('.order.summary .order.count');
-    const pizzaContainer = document.querySelector('.pizza-container');
-
+    const pizzaCardTemplate = document.getElementById('pizzaCardTemplate');
+    
     let allPizzas = [];
     let cartItems = [];
-
     const LOCAL_STORAGE_KEY = 'kmaPizzaCart';
 
     loadCartFromLocalStorage();
@@ -38,11 +32,15 @@ document.addEventListener('DOMContentLoaded', function () {
             displayPizzas(allPizzas);
         } catch (error) {
             console.error('Не вдалося завантажити піци:', error);
+            const pizzaContainer = document.querySelector('.pizza-container');
             pizzaContainer.innerHTML = '<p>Не вдалося завантажити список піц. Спробуйте пізніше.</p>';
         }
     }
 
     function initializeCartDisplay() {
+        const orderCardCount = document.querySelector('.order.summary .order.count');
+        const totalAmountSpan = document.querySelector('.order.total .total-amount');
+        const orderList = document.querySelector('.order.list');
         orderList.innerHTML = '';
 
         if (cartItems.length === 0) {
@@ -59,17 +57,21 @@ document.addEventListener('DOMContentLoaded', function () {
         });
         orderList.appendChild(fragment);
         totalAmountSpan.textContent = `${total} грн`;
+
         orderCardCount.textContent = totalItemsInCart;
 
     }
 
     function toggleEmptyCartMessage() {
-        const emptyCartMessage = document.querySelector('.empty-cart-message');
+        const emptyCartMessage = document.querySelector('.cart-message');
+        const orderCardCount = document.querySelector('.order.summary .order.count');
+        const totalAmountSpan = document.querySelector('.order.total .total-amount');
+        const orderList = document.querySelector('.order.list');
         if (cartItems.length === 0) {
             if (!emptyCartMessage) {
                 const newEmptyCartMessage = document.createElement('li');
-                newEmptyCartMessage.classList.add('empty-cart-message');
-                newEmptyCartMessage.textContent = 'Ваш кошик порожній.';
+                newEmptyCartMessage.classList.add('cart-message');
+                newEmptyCartMessage.textContent = 'Ваш кошик порожній';
                 totalAmountSpan.textContent = '0 грн';
                 orderCardCount.textContent = '0';
                 orderList.innerHTML = '';
@@ -117,6 +119,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function addPizzaToCart(pizzaId, pizzaSize) {
         const pizza = allPizzas.find(p => p.id === pizzaId);
+        const orderCardCount = document.querySelector('.order.summary .order.count');
+        const totalAmountSpan = document.querySelector('.order.total .total-amount');
+        const orderList = document.querySelector('.order.list');
         if (!pizza) return;
 
         const priceOption = pizza.prices.find(p => p.size == pizzaSize);
@@ -158,10 +163,13 @@ document.addEventListener('DOMContentLoaded', function () {
                     removeItemFromCart(itemId, itemSize);
                 }
             }
+            const orderList = document.querySelector('.order.list');
             const itemElement = orderList.querySelector(`li[data-item-id="${itemId}"][data-item-size="${itemSize}"]`);
             if (itemElement) {
                 const quantityElement = itemElement.querySelector('.item.quantity');
                 const priceElement = itemElement.querySelector('.item.price');
+                const orderCardCount = document.querySelector('.order.summary .order.count');
+                const totalAmountSpan = document.querySelector('.order.total .total-amount');
                 quantityElement.textContent = item.quantity;
                 priceElement.textContent = `${item.price * item.quantity}грн`;
                 totalAmountSpan.textContent = `${parseInt(totalAmountSpan.textContent) + (action === 'increase' ? item.price : -item.price)} грн`;
@@ -174,7 +182,10 @@ document.addEventListener('DOMContentLoaded', function () {
     function removeItemFromCart(itemId, itemSize) {
         const itemIndex = cartItems.findIndex(item => item.id === itemId && item.size == itemSize);
         if (itemIndex > -1) {
+            const orderList = document.querySelector('.order.list');
             const itemElement = orderList.querySelector(`li[data-item-id="${itemId}"][data-item-size="${itemSize}"]`);
+            const orderCardCount = document.querySelector('.order.summary .order.count');
+            const totalAmountSpan = document.querySelector('.order.total .total-amount');
             if (itemElement) {
                 itemElement.remove();
                 totalAmountSpan.textContent = `${parseInt(totalAmountSpan.textContent) - (cartItems[itemIndex].price * cartItems[itemIndex].quantity)} грн`;
@@ -187,7 +198,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function displayPizzas(pizzasToDisplay) {
-        const pizzaCardTemplate = document.getElementById('pizzaCardTemplate');
+        const pizzaContainer = document.querySelector('.pizza-container');
         pizzaContainer.innerHTML = '';
         const pizzaCountElement = document.querySelector('.page-title .order.count');
 
@@ -252,6 +263,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.body.addEventListener('click', function (event) {
         const target = event.target;
+        const cartAside = document.getElementById('cartAside');
+        const toggleCartButton = document.getElementById('toggleCartButton');
 
         if (toggleCartButton.contains(target)) {
             cartAside.classList.toggle('active');
@@ -310,10 +323,10 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             if (selectedCategoryAttribute === 'all') {
-                pageTitle.innerHTML = 'Усі піци' + ` <span class="order count">"${filteredPizzas.length}"</span>`;
+                pageTitle.innerHTML = 'Усі піци' + ` <span class="order count">${filteredPizzas.length}</span>`;
             } else {
                 pageTitle.innerHTML = 'Піци ' + listItem.textContent.trim().toLocaleLowerCase() +
-                    ` <span class="order count">"${filteredPizzas.length}"</span>`;
+                    ` <span class="order count">${filteredPizzas.length}</span>`;
             }
 
             displayPizzas(filteredPizzas);
