@@ -22,14 +22,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
             order.items.forEach(item => {
                 flatData.push({
+                    "Дата замовлення": new Date(order.timestamp).toLocaleDateString('uk-UA'),
+                    "Час замовлення": new Date(order.timestamp).toLocaleTimeString('uk-UA', { hour: '2-digit', minute: '2-digit' }),
                     "Назва Піци": item.name,
                     "Розмір": item.size,
                     "Кількість": item.quantity,
                     "Ціна за одиницю": item.price,
-                    "Загальна ціна товару": item.price * item.quantity,
-                    "Дата замовлення": new Date(order.timestamp).toLocaleDateString('uk-UA'),
-                    "Час замовлення": new Date(order.timestamp).toLocaleTimeString('uk-UA', { hour: '2-digit', minute: '2-digit' }), // Додано формат часу
-                    "ID Замовлення": order.orderId || 'N/A' // Fallback for orderId if not present
+                    "Загальна ціна товару": item.price * item.quantity
                 });
             });
         });
@@ -48,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function () {
         },
         options: {
             grid: {
-                type: "flat",
+                type: "classic",
                 title: "Історія Замовлень Піцерії KMA",
                 showTotals: false,
                 showFilter: true // Додано для можливості фільтрації
@@ -59,33 +58,27 @@ document.addEventListener('DOMContentLoaded', function () {
         slice: {
             rows: [
                 { uniqueName: "Дата замовлення", sort: "asc" },
-                { uniqueName: "Час замовлення" },
-                { uniqueName: "Назва Піци" },
-                { uniqueName: "Розмір" }
+                { uniqueName: "Час замовлення", sort: "asc" },
+                { uniqueName: "Назва Піци", sort: "asc"},
+                { uniqueName: "Розмір", sort: "asc"},
+                { uniqueName: "Кількість", sort: "asc"},
+                { uniqueName: "Ціна за одиницю", sort: "asc"},
+                { uniqueName: "Загальна ціна товару", sort: "asc"}
             ],
             columns: [
+                {uniqueName: "measures"}
             ],
             measures: [
                 { uniqueName: "Кількість", aggregation: "sum", caption: "Кількість (шт)" }, // Caption для зрозумілості
-                { uniqueName: "Ціна за одиницю", aggregation: "average", format: "currency", caption: "Середня ціна (грн)" },
-                { uniqueName: "Загальна ціна товару", aggregation: "sum", format: "currency", caption: "Загальна ціна (грн)" }
+                { uniqueName: "Ціна за одиницю", aggregation: "average", format: "currency" },
+                { uniqueName: "Загальна ціна товару", aggregation: "sum", format: "currency"}
             ],
             // Ви можете додати Report Filters, якщо хочете фільтрувати дані перед відображенням у таблиці
             reportFilters: []
         },
         formats: [
             { name: "currency", maxDecimalPlaces: 2, decimalPlaces: 2, currencySymbol: " грн", currencySymbolAlign: "right" }
-        ],
-        "drills": {
-            "drillAll": false,
-            "rows": [
-                {
-                    "tuple": [
-                        "Business Type.Warehouse"
-                    ]
-                }
-            ]
-        }
+        ]
     };
 
     // 4. Ініціалізуємо WebDataRocks тільки якщо є дані
