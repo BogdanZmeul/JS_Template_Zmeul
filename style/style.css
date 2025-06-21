@@ -153,6 +153,7 @@ header {
     display: flex;
     list-style: none;
     flex-grow: 1;
+    gap: 10px;
 }
 
 .header-nav.links li a {

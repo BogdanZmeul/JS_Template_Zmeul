@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Bogdan Zmeul">
+    <title>KMA Pizza - Історія Замовлень</title>
+    <link rel="stylesheet" href="style/style.css">
+
+    <link href="https://cdn.webdatarocks.com/latest/webdatarocks.min.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css"
+        href="https://cdn.webdatarocks.com/latest/theme/orange/webdatarocks.css" />
+    <script src="https://cdn.webdatarocks.com/latest/webdatarocks.toolbar.min.js"></script>
+    <script src="https://cdn.webdatarocks.com/latest/webdatarocks.js"></script>
+
+    <script src="./src/statistics.js" defer></script>
+</head>
+
+<body>
+    <main style="flex-basis: 100%;">
+        <header>
+            <a href="#" class="logo-container">
+                <span class="logo-text-pizza">PIZZA</span>
+                <span class="logo-text-kma">KMA</span>
+                <img src="images/discount.svg" alt="logo">
+            </a>
+            <section class="header-right">
+                <section class="header-info">
+                    <ul class="contact-info">
+                        <li class="phone-number">(044) 222 5 222</li>
+                        <li class="working-hours">24 години/ 7 днів на тиждень</li>
+                        <li class="delivery-info">Безкоштовна доставка піци</li>
+                    </ul>
+                    <button class="login-button">Увійти</button>
+                </section>
+                <nav class="header-nav">
+                    <ul class="header-nav links">
+                        <li><a href="index.html">Піца</a></li>
+                        <li><a href="statistics.html">Історія замовлень</a></li>
+                    </ul>
+                    <button id="toggleCartButton" style="display: none;">Кошик</button>
+                </nav>
+            </section>
+        </header>
+
+            <div id="pivotContainer"></div>
+    </main>
+
+</body>
+
+</html>

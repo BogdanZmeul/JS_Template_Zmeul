@@ -1,9 +1,10 @@
 document.addEventListener('DOMContentLoaded', function () {
     const pizzaCardTemplate = document.getElementById('pizzaCardTemplate');
-    
+
     let allPizzas = [];
     let cartItems = [];
     const LOCAL_STORAGE_KEY = 'kmaPizzaCart';
+    const ORDER_HISTORY_KEY = 'kmaPizzaOrderHistory';
 
     loadCartFromLocalStorage();
     fetchPizzas();
@@ -20,6 +21,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function saveCartToLocalStorage() {
         localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(cartItems));
+    }
+
+    function saveOrderToHistory(order) {
+        const history = JSON.parse(localStorage.getItem(ORDER_HISTORY_KEY) || '[]');
+        history.push(order);
+        localStorage.setItem(ORDER_HISTORY_KEY, JSON.stringify(history));
     }
 
     async function fetchPizzas() {
@@ -301,6 +308,27 @@ document.addEventListener('DOMContentLoaded', function () {
                 addPizzaToCart(pizzaId, pizzaSize);
             }
         }
+
+        if (target.classList.contains('btn') && target.classList.contains('order')) { // "Замовити" button
+            if (cartItems.length > 0) {
+                const totalAmountText = document.querySelector('.order.total .total-amount').textContent;
+                const totalAmount = parseFloat(totalAmountText.replace(' грн', ''));
+
+                const orderDetails = {
+                    orderId: Date.now(), // Simple unique ID for the order
+                    timestamp: new Date().toISOString(), // Current time for the order
+                    items: JSON.parse(JSON.stringify(cartItems)), // Deep copy cart items
+                    total: totalAmount
+                };
+
+                saveOrderToHistory(orderDetails); // Save the order to history
+                clearOrderCart(); // Clear the current cart after placing order
+                alert('Ваше замовлення успішно оформлено!'); // Or show a more elegant confirmation
+            } else {
+                alert('Ваш кошик порожній. Додайте піцу, щоб зробити замовлення!');
+            }
+        }
+
 
         if (target.closest('.page-nav.links li') && target.tagName === 'A') {
             event.preventDefault();
