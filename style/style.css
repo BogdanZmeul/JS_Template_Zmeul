@@ -25,6 +25,7 @@ body {
     margin: 0;
     padding: 0;
     min-height: 100vh;
+    overflow-y: scroll;
 }
 
 main {
@@ -32,8 +33,14 @@ main {
     background-color: var(--main-color);
 }
 
-ul {
-    all: unset;
+.header-right ul,
+.header-nav ul,  
+.page-nav ul,  
+aside ul         
+{
+    list-style: none; 
+    padding: 0;      
+    margin: 0;       
 }
 
 /* Header Styles */
@@ -68,21 +75,19 @@ header {
     display: flex;
     flex-direction: column;
     background-color: var(--orange-color);
-    padding: 10px 15px;
+    padding: 15px 15px;
     text-decoration: none;
     color: var(--text-color);
-    text-align: center;
     position: relative;
     height: 100%;
     box-sizing: border-box;
-    display: flex;
     align-items: center;
     justify-content: center;
 }
 
 .logo-container img {
     position: absolute;
-    top: 61px;
+    top: 72px;
     left: 0px;
     width: 82px;
     transform: rotate(180deg);
@@ -127,7 +132,7 @@ header {
     border: none;
     box-sizing: border-box;
     height: 80%;
-    padding: 2px 10px;
+    padding: 0px 10px;
     cursor: pointer;
     font-size: calc(0.75rem + 4 * (100vw / 1920));
     font-weight: bold;
@@ -154,6 +159,7 @@ header {
     display: flex;
     list-style: none;
     flex-grow: 1;
+    gap: 10px;
 }
 
 .header-nav.links li a {
@@ -178,7 +184,7 @@ header {
     border: none;
     box-sizing: border-box;
     height: 80%;
-    padding: 2px 10px;
+    padding: 0px 10px;
     cursor: pointer;
     font-size: calc(0.75rem + 4 * (100vw / 1920));
     font-weight: bold;
@@ -203,7 +209,6 @@ header {
     align-items: center;
     justify-content: center;
     gap: 5px;
-    flex-grow: 1;
 }
 
 .page-nav {
@@ -267,12 +272,26 @@ header {
     display: grid;
     grid-auto-flow: row;
     grid-template: auto 1fr / 1fr;
+    max-width: 400px;
+}
+
+#pizza-card-template {
+    display: none;
 }
 
 .pizza-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
 }
+
+.no-pizzas-message {
+    width: 100%;
+    text-align: center;
+    margin-top: 50px;
+    color: var(--dark-text-color);
+    font-size: 1rem;
+}
+
 
 .pizza-image-container {
     position: relative;
@@ -457,10 +476,15 @@ aside {
     position: sticky;
     top: 0;
     height: 100vh;
+    min-width: 260px;
 }
 
-aside.active {
-    display: block;
+.cart-message {
+    width: 100%;
+    text-align: center;
+    margin-top: calc(50vh - 100px);
+    color: var(--dark-text-color);
+    font-size: calc(0.75rem + 4 * (100vw / 1920));
 }
 
 .order.summary {
@@ -468,7 +492,7 @@ aside.active {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 18px 10px;
+    padding: 25px 10px;
     background-color: white;
 }
 
@@ -488,8 +512,14 @@ aside.active {
     background-color: var(--orange-color);
     color: var(--text-color);
     border-radius: 50%;
-    padding: 4px 8px;
+    padding: 4px 6px;
     font-size: calc(0.625rem + 2 * (100vw / 1920));
+    min-width: 12px
+}
+
+.page-title .order.count {
+    padding: 4px 6px 4px 5px;
+    min-width: 10px
 }
 
 .btn.clear-order {
@@ -547,15 +577,16 @@ aside.active {
 }
 
 .item.price {
-    font-size: calc(0.68rem + 3 * (100vw / 1920));
+    font-size: calc(0.7rem + 3 * (100vw / 1920));
     font-weight: bold;
     color: var(--dark-text-color);
+    min-width: 55px;
 }
 
 .item.controls {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 7px;
 }
 
 .btn.quantity {
@@ -603,9 +634,13 @@ aside.active {
 }
 
 .item.quantity {
-    font-size: calc(0.93rem + 4 * (100vw / 1920));
+    font-size: calc(0.7rem + 4 * (100vw / 1920));
     font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     color: var(--dark-text-color);
+    min-width: 17px;
 }
 
 .btn.remove-item {
@@ -681,7 +716,6 @@ aside.active {
     font-size: calc(0.875rem + 4 * (100vw / 1920));
     text-align: center;
     transition: all 0.3s ease;
-    box-sizing: border-box;
 }
 
 .btn.order:hover {
@@ -723,13 +757,17 @@ aside.active {
         font-size: calc(0.875rem + (4 + 4 * 0.7) * ((100vw - 320px) / 1920));
     }
 
-    .item.quantity,
     .order.summary h2 {
         font-size: calc(0.93rem + (4 + 4 * 0.7) * ((100vw - 320px) / 1920));
     }
 
+    .item.quantity {
+        font-size: calc(0.7rem + (4 + 4 * 0.7) * ((100vw - 320px) / 1920));
+    }
+
     .item.price {
-        font-size: calc(0.68rem + (3 + 3 * 0.7) * ((100vw - 320px) / 1920));
+        font-size: calc(0.7rem + (3 + 3 * 0.7) * ((100vw - 320px) / 1920));
+        min-width: unset;
     }
 
     .item.attributes {
@@ -752,11 +790,12 @@ aside.active {
         display: flex;
         position: fixed;
         right: 0;
-        top: 63px;
+        top: 74px;
         height: calc(100vh - 63px);
 
         width: 80vw;
         max-width: 400px;
+        min-width: unset;
 
         box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
 
@@ -775,6 +814,12 @@ aside.active {
 
     #toggleCartButton {
         display: block;
+    }
+
+    @media (max-width: 300px) {
+        .item.controls {
+            gap: 5px;
+        }
     }
 
 }
