@@ -7,10 +7,10 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function prepareDataForWebDataRocks(orderHistory) {
-        const flatData = [];
+        const reportData = [];
         orderHistory.forEach(order => {
             order.items.forEach(item => {
-                flatData.push({
+                reportData.push({
                     "Дата замовлення": new Date(order.timestamp).toLocaleDateString('uk-UA'),
                     "Час замовлення": new Date(order.timestamp).toLocaleTimeString('uk-UA', { hour: '2-digit', minute: '2-digit' }),
                     "Назва Піци": item.name,
@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
             });
         });
-        return flatData;
+        return reportData;
     }
 
     const orderHistory = loadOrderHistory();

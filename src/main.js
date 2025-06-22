@@ -224,7 +224,6 @@ document.addEventListener('DOMContentLoaded', function () {
             const pizzaCard = pizzaCardTemplate.cloneNode(true);
             pizzaCard.style.display = '';
             pizzaCard.removeAttribute('id');
-            pizzaCard.classList.remove('pizza-card-template');
 
             pizzaCard.querySelector('.pizza-image').src = pizza.image;
             pizzaCard.querySelector('.pizza-image').alt = `Піца ${pizza.name}`;
@@ -311,14 +310,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (target.classList.contains('btn') && target.classList.contains('order')) {
             if (cartItems.length > 0) {
-                const totalAmountText = document.querySelector('.order.total .total-amount').textContent;
-                const totalAmount = parseFloat(totalAmountText.replace(' грн', ''));
 
                 const orderDetails = {
                     orderId: Date.now(),
                     timestamp: new Date().toISOString(),
                     items: JSON.parse(JSON.stringify(cartItems)),
-                    total: totalAmount
                 };
 
                 saveOrderHistoryToLocalStorage(orderDetails);

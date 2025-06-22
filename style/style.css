@@ -275,6 +275,10 @@ header {
     max-width: 400px;
 }
 
+#pizza-card-template {
+    display: none;
+}
+
 .pizza-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
